@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import logging
 import re
-from typing import Any
+from typing import Any, TYPE_CHECKING
 
 try:
     import jieba
@@ -38,6 +38,7 @@ else:
     else:
         _nltk_available = True
 
+from ._entity_resolver import get_entity_resolver_cls, load_seed_data
 from .schemas import (
     FilterMeta,
     Language,
@@ -49,15 +50,8 @@ from .schemas import (
     TextLevel,
 )
 
-# Optional: reuse NLU EntityResolver for accurate entity matching.
-# Falls back gracefully when query_intelligence is not available.
-try:
-    from query_intelligence.data_loader import load_seed_entities, load_seed_aliases
+if TYPE_CHECKING:
     from query_intelligence.nlu.entity_resolver import EntityResolver
-except ImportError:
-    EntityResolver = None  # type: ignore[assignment]
-    load_seed_entities = None  # type: ignore[assignment]
-    load_seed_aliases = None  # type: ignore[assignment]
 
 logger = logging.getLogger(__name__)
 
@@ -493,14 +487,14 @@ class Preprocessor:
         is unavailable (the preprocessor will then fall back to substring
         matching).
         """
-        if EntityResolver is None or load_seed_entities is None or load_seed_aliases is None:
+        resolver_cls = get_entity_resolver_cls()
+        if resolver_cls is None:
             return None
         try:
-            entities = load_seed_entities()
-            aliases = load_seed_aliases()
+            entities, aliases = load_seed_data()
             if not entities or not aliases:
                 return None
-            return EntityResolver(entities=entities, aliases=aliases)
+            return resolver_cls(entities=entities, aliases=aliases)
         except Exception:
             logger.warning("Failed to build default EntityResolver", exc_info=True)
             return None

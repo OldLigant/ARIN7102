@@ -1,0 +1,51 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "arin7102"
+version = "0.1.0"
+description = "ARIN7102 Project"
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "fastapi>=0.136,<0.137",
+    "uvicorn>=0.45,<0.46",
+    "pydantic>=2.11,<2.12",
+    "numpy>=1.26,<3",
+    "scikit-learn>=1.7,<1.8",
+    "rapidfuzz>=3.14,<4",
+    "jsonschema>=4.25,<5",
+    "httpx>=0.28,<0.29",
+    "requests>=2.32,<3",
+    "pandas>=2.3,<3",
+    "joblib>=1.5,<2",
+    "tushare>=1.4,<2",
+    "akshare>=1.18,<2",
+    "psycopg[binary]>=3.3,<4",
+    "efinance>=0.5,<1",
+    "fredapi>=0.5,<1",
+    "sklearn-crfsuite>=0.5,<1",
+    "python-crfsuite>=0.9,<1",
+    "huggingface_hub>=0.28,<1",
+    "jieba>=0.42,<1",
+    "lingua-language-detector>=2.0,<3",
+    "nltk>=3.9,<4",
+    "torch>=2.0,<3",
+    "transformers>=4.40,<5",
+    "accelerate>=0.30,<2",
+    "sentencepiece>=0.2,<1",
+    "json-repair>=0.30,<1",
+]
+
+[project.optional-dependencies]
+test = [
+    "pytest>=9.0,<10",
+]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["query_intelligence*", "sentiment*", "schemas*", "models*", "evaluation*", "training*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

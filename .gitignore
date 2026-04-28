@@ -1,5 +1,11 @@
 # Python
 __pycache__/
+*.egg-info/
+
+# Tool lock files (keep tool-neutral)
+uv.lock
+poetry.lock
+Pipfile.lock
 *.py[cod]
 *.pyo
 *.pyd

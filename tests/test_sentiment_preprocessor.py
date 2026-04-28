@@ -367,7 +367,8 @@ def test_extract_target_symbols_skips_missing_symbol():
 
 def _make_test_resolver():
     """Build a minimal EntityResolver for testing."""
-    from sentiment.preprocessor import EntityResolver
+    from sentiment._entity_resolver import get_entity_resolver_cls
+    EntityResolver = get_entity_resolver_cls()
 
     entities = [
         {"entity_id": "1", "canonical_name": "贵州茅台", "symbol": "600519.SH", "entity_type": "stock", "normalized_name": "贵州茅台", "exchange": "SSE"},
